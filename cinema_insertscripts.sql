@@ -147,12 +147,30 @@ INSERT INTO sala VALUES (5, 45);
 INSERT INTO sala VALUES (6, 50);
 
 -- tabela ingresso
-
+INSERT INTO ingresso VALUES (
+	generate_series(1, 180),
+	round((random() * (50-25)) / 5) * 5 + 25,
+	ceil(random() * 50),
+	ceil(random() * 21),
+	ceil(random() * 6)
+);
 
 -- tabela funcionario
-
+INSERT INTO funcionario VALUES (1, 'Paulo', '999996666');
+INSERT INTO funcionario VALUES (2, 'Marcos', '999996666');
+INSERT INTO funcionario VALUES (3, 'Sara', '999996666');
+INSERT INTO funcionario VALUES (4, 'Bruna', '999996666');
+INSERT INTO funcionario VALUES (5, 'David', '999996666');
+INSERT INTO funcionario VALUES (6, 'Glória', '999996666');
 
 -- tabela bilheteria
-
+INSERT INTO bilheteria VALUES (
+	generate_series(1, 6),
+	generate_series(1, 6)
+);
 
 -- tabela bilheteriaingresso
+INSERT INTO bilheteriaingresso (id_ingresso, id_bilheteria)
+SELECT ceil(random() * 180),
+		ceil(random() * 6)		
+FROM generate_series(1, 180);
