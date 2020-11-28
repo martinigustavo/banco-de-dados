@@ -71,8 +71,8 @@ INSERT INTO ator VALUES (35, 'Lily Collins', 'F', 'Inglaterra');
 
 -- tabela exibicao
 INSERT INTO exibicao VALUES (generate_series(1, 40),
-							 generate_series('01/01/2010'::date, CURRENT_DATE, '100 days'),
-							 generate_series('08/01/2010'::date, CURRENT_DATE, '100 days'));
+							 generate_series('01/01/2016'::date, CURRENT_DATE, '45 days'),
+							 generate_series('08/01/2016'::date, CURRENT_DATE, '45 days'));
 
 -- tabela filme
 INSERT INTO filme VALUES (1, 'O Poderoso Chefão', '175', '1972', 'S', 31, 22);
