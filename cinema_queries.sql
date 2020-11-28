@@ -1,17 +1,24 @@
--- VIEW 1 -- filmes com atores
+-- VIEW 1
+-- filmes com atores
 CREATE OR REPLACE VIEW v_filmes_atores AS
 SELECT f.id AS id_filme, a.id AS id_ator
 FROM filme f, ator a, filmeator fa
 WHERE f.id = fa.id_filme AND fa.id_ator = a.id
 ORDER BY f.id;
 
--- VIEW 2 -- FILMES com genero e diretor
+-- VIEW 2
+-- filmes com genero e diretor
 CREATE OR REPLACE VIEW v_filmes_diretores AS
 SELECT f.id AS id_filme, d.id AS id_diretor
 FROM filme f, diretor d
 WHERE f.id_diretor = d.id;
 
--- VIEW 3 -- numero de filmes por genero
+-- VIEW 3
+-- filmes exibidos em janeiro 
+CREATE OR REPLACE VIEW v_exibicao_janeiro AS
+SELECT f.id AS id_filme, e.data_inicio
+FROM filme f, exibicao e
+WHERE f.id_exibicao = e.id AND extract(month from e.data_inicio) = '01';
 
 
 -- QUERY 1: 
