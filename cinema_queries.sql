@@ -14,12 +14,11 @@ FROM filme f, diretor d
 WHERE f.id_diretor = d.id;
 
 -- VIEW 3
--- filmes exibidos em janeiro 
+-- filmes exibidos nas férias de janeiro
 CREATE OR REPLACE VIEW v_exibicao_janeiro AS
 SELECT f.id AS id_filme, e.data_inicio
 FROM filme f, exibicao e
 WHERE f.id_exibicao = e.id AND extract(month from e.data_inicio) = '01';
-
 
 -- QUERY 1: 
 -- Descobrir qual o gênero com a maior quantidade de filmes que já foram exibidos no cinema.
@@ -63,12 +62,28 @@ ORDER BY qtde_ingresso_func DESC;
 -- criar procedure pra mostrar o valor arrecadado por bilheteria em algum ano
 
 -- QUERY 6:
+-- contagem de atores por genero
 -- genero dos atores, usar view pra ver atores sexo F de cada filme
-
+-- Mostrar nome do filme, o ano de lançamento e a quantidade de atores de cada genero.
+SELECT f.nome AS filme, f.ano AS lancamento, a.genero, COUNT(a.genero) AS genero_count
+FROM v_filmes_atores v
+LEFT JOIN filme f ON v.id_filme = f.id
+LEFT JOIN ator a ON v.id_ator = a.id
+GROUP BY a.genero, f.nome, f.ano
+ORDER BY filme;
 
 -- QUERY 7:
--- ...
-
+-- As férias de janeiro é a época em que mais pessoas passam a frequentar o cinema.
+-- Por isso, mostre os filmes que já foram exibidos no mês de janeiro de todos os anos.
+-- Mostrar o nome do filme, o diretor, a data de exibicao e o valor arrecadado em bilheteria.
+SELECT f.nome AS filme, d.nome AS diretor, v.data_inicio AS exibicao,SUM(i.preco) AS total_arrecadado
+FROM v_exibicao_janeiro v
+LEFT JOIN filme f ON v.id_filme = f.id
+LEFT JOIN diretor d ON f.id_diretor = d.id
+LEFT JOIN sessao s ON f.id = s.id_filme
+LEFT JOIN ingresso i ON s.id = i.id_sessao
+LEFT JOIN bilheteriaingresso bi ON bi.id_ingresso = i.id
+GROUP BY f.id, d.nome, exibicao;
 
 -- QUERY 8:
 -- ...
