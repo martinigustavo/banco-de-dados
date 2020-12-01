@@ -1,21 +1,22 @@
--- VIEW 1
--- retorna lista de filmes e respectivos atores
+-- VIEWS
+-- VIEW 1:
+-- Retorna lista de filmes e respectivos atores.
 CREATE OR REPLACE VIEW v_filmes_atores AS
 SELECT f.id AS id_filme, a.id AS id_ator
 FROM filme f, ator a, filmeator fa
 WHERE f.id = fa.id_filme AND fa.id_ator = a.id
 ORDER BY f.id;
 
--- VIEW 2
--- retorna lista de filmes e respectivos diretores
+-- VIEW 2:
+-- Retorna lista de filmes e respectivos diretores.
 CREATE OR REPLACE VIEW v_filmes_diretores AS
 SELECT f.id AS id_filme, d.id AS id_diretor
 FROM filme f, diretor d
 WHERE f.id_diretor = d.id
 ORDER BY f.id;
 
--- VIEW 3
--- retorna lista de filmes exibidos nas férias de janeiro
+-- VIEW 3:
+-- Retorna lista de filmes exibidos nas férias de janeiro.
 CREATE OR REPLACE VIEW v_exibicao_janeiro AS
 SELECT f.id AS id_filme, e.data_inicio
 FROM filme f, exibicao e
@@ -140,13 +141,6 @@ WHERE f.id_exibicao = e.id AND gf.id_filme = f.id AND g.id = gf.id_genero
 						ORDER BY COUNT(bi.*))
 ORDER BY genero;
 
--- PROCEDURES PARA INSERÇÃO DE DADOS
--- PROCEDURE 1:
-
-
--- PROCEDURE 2:
-
-
 -- PROCEDURES COM PARÂMETROS
 -- PROCEDURE 1:
 -- Buscar ingressos vendidos em alguma faixa de tempo específica, passando como parâmetros a data inicial do período
@@ -173,6 +167,3 @@ BEGIN
 	WHERE a.genero = p_genero;
 END;
 $$ LANGUAGE plpgsql;
-
--- PROCEDURE COM CURSOR:
-
