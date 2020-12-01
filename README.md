@@ -6,7 +6,7 @@ Implementação de um Banco de Dados com modelo ER de no mínimo 12 tabelas:
 - Scripts de inserção de dados;
 - Descrição de enunciados;
 - Resolução dos enunciados com as queries;
-- Triggers.
+- Views, Procedures & Triggers.
 
 
 ### :computer: Tech:
