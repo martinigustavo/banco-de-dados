@@ -22,6 +22,34 @@ SELECT f.id AS id_filme, e.data_inicio
 FROM filme f, exibicao e
 WHERE f.id_exibicao = e.id AND extract(month from e.data_inicio) = '01';
 
+-- PROCEDURES COM PARÂMETROS
+-- PROCEDURE 1:
+-- Buscar ingressos vendidos em alguma faixa de tempo específica, passando como parâmetros a data inicial do período
+-- e a data final.
+CREATE OR REPLACE FUNCTION f_ingressos_vendidos(p_dataini DATE, p_datafim DATE)
+RETURNS TABLE (ingresso INT, preco FLOAT, cadeira VARCHAR(45), sala INT, capacidade_sala INT, filme VARCHAR(200))
+AS $$
+BEGIN
+	RETURN QUERY SELECT i.id, i.preco, i.cadeira, s.id, s.capacidade, f.nome
+	FROM ingresso i, bilheteriaingresso bi, sala s, sessao ss, filme f, exibicao e
+	WHERE i.id = bi.id_ingresso AND i.id_sala = s.id AND ss.id = i.id_sessao AND ss.id_filme = f.id AND e.id = f.id_exibicao
+			AND e.data_inicio >= p_dataini AND e.data_inicio <= p_datafim;
+END;
+$$ LANGUAGE plpgsql;
+
+-- PROCEDURE 2:
+-- Buscar atores pelo gênero, passando como parâmetro o gênero.
+CREATE OR REPLACE FUNCTION f_atores_genero(p_genero CHAR(1))
+RETURNS TABLE (id_ator INT, nome VARCHAR(200), genero CHAR(1), nacionalidade VARCHAR(45))
+AS $$
+BEGIN
+	RETURN QUERY SELECT *
+	FROM ator a
+	WHERE a.genero = p_genero;
+END;
+$$ LANGUAGE plpgsql;
+
+-- QUERIES
 -- QUERY 1: 
 -- Descobrir qual o gênero com a maior quantidade de filmes que já foram exibidos neste cinema.
 -- Mostrar a quantidade de filmes para cada gênero ordenando do maior para o menor e a descrição de cada um.
@@ -140,30 +168,3 @@ WHERE f.id_exibicao = e.id AND gf.id_filme = f.id AND g.id = gf.id_genero
 						GROUP BY f.id
 						ORDER BY COUNT(bi.*))
 ORDER BY genero;
-
--- PROCEDURES COM PARÂMETROS
--- PROCEDURE 1:
--- Buscar ingressos vendidos em alguma faixa de tempo específica, passando como parâmetros a data inicial do período
--- e a data final.
-CREATE OR REPLACE FUNCTION f_ingressos_vendidos(p_dataini DATE, p_datafim DATE)
-RETURNS TABLE (ingresso INT, preco FLOAT, cadeira VARCHAR(45), sala INT, capacidade_sala INT, filme VARCHAR(200))
-AS $$
-BEGIN
-	RETURN QUERY SELECT i.id, i.preco, i.cadeira, s.id, s.capacidade, f.nome
-	FROM ingresso i, bilheteriaingresso bi, sala s, sessao ss, filme f, exibicao e
-	WHERE i.id = bi.id_ingresso AND i.id_sala = s.id AND ss.id = i.id_sessao AND ss.id_filme = f.id AND e.id = f.id_exibicao
-			AND e.data_inicio >= p_dataini AND e.data_inicio <= p_datafim;
-END;
-$$ LANGUAGE plpgsql;
-
--- PROCEDURE 2:
--- Buscar atores pelo gênero, passando como parâmetro o gênero.
-CREATE OR REPLACE FUNCTION f_atores_genero(p_genero CHAR(1))
-RETURNS TABLE (id_ator INT, nome VARCHAR(200), genero CHAR(1), nacionalidade VARCHAR(45))
-AS $$
-BEGIN
-	RETURN QUERY SELECT *
-	FROM ator a
-	WHERE a.genero = p_genero;
-END;
-$$ LANGUAGE plpgsql;
